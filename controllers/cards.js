@@ -4,8 +4,8 @@ const { BAD_REQUEST, NOT_FOUND, SERVER_ERROR } = require('../errors/errors');
 const getCards = (req, res) => {
   Card.find({})
     .then((cards) => res.status(200).send(cards))
-    .catch((err) => {
-      res.status(SERVER_ERROR).send({ err });
+    .catch(() => {
+      res.status(SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -18,7 +18,7 @@ const createCard = (req, res) => {
       if (err.name === 'ValidationError') {
         res.status(BAD_REQUEST).send({ message: 'Неверные данные для создания карточки' });
       } else {
-        res.status(SERVER_ERROR).send({ err });
+        res.status(SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
       }
     });
 };
@@ -38,7 +38,7 @@ const deleteCard = (req, res) => {
           message: "'Карточка c данным _id не найдена.",
         });
       }
-      return res.status(SERVER_ERROR).send({ err });
+      return res.status(SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -54,7 +54,7 @@ const addLike = (req, res) => {
       if (err.name === 'CastError') {
         return res.status(BAD_REQUEST).send({ message: 'Bad Request' });
       }
-      return res.status(SERVER_ERROR).send({ err });
+      return res.status(SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -70,7 +70,7 @@ const removeLike = (req, res) => {
       if (err.name === 'CastError') {
         return res.status(BAD_REQUEST).send({ message: 'Bad Request' });
       }
-      return res.status(SERVER_ERROR).send({ err });
+      return res.status(SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
