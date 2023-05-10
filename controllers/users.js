@@ -5,7 +5,7 @@ const getUser = (req, res) => {
   User.find({})
     .then((users) => res.status(200).send(users))
     .catch((err) => {
-      res.status(SERVER_ERROR).send({ err });
+      res.status(SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -21,7 +21,7 @@ const getUserById = (req, res) => {
       if (err.name === 'DocumentNotFoundError') {
         return res.status(NOT_FOUND).send({ message: 'Пользователь по данному _id не найден' });
       }
-      return res.status(SERVER_ERROR).send({ err });
+      return res.status(SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -33,7 +33,7 @@ const createUser = (req, res) => {
       if (err.name === 'ValidationError') {
         res.status(BAD_REQUEST).send({ message: 'Неверные данные для создания пользователя' });
       } else {
-        res.status(SERVER_ERROR).send({ err });
+        res.status(SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
       }
     });
 };
@@ -49,7 +49,7 @@ const updateUser = (req, res) => {
       if (err.name === 'ValidationError') {
         res.status(BAD_REQUEST).send({ message: 'Неверные данные для обновления пользователя' });
       } else {
-        res.status(SERVER_ERROR).send({ err });
+        res.status(SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
       }
     });
 };
@@ -65,7 +65,7 @@ const updateAvatar = (req, res) => {
       if (err.name === 'ValidationError') {
         res.status(BAD_REQUEST).send({ message: 'Неверные данные для обновления аватара пользователя' });
       } else {
-        res.status(SERVER_ERROR).send({ err });
+        res.status(SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
       }
     });
 };
