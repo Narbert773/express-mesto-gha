@@ -13,13 +13,13 @@ const getUserById = (req, res) => {
   const userId = req.params;
   User.findById(userId)
     .orFail()
-    .then((user) => res.send(user))
+    .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === 'CastError') {
         return res.status(BAD_REQUEST).send({ message: 'Bad Request' });
       }
       if (err.name === 'DocumentNotFoundError') {
-        return res.status(NOT_FOUND).send({ message: 'Пользователь c данным _id не найден.' });
+        return res.status(NOT_FOUND).send({ message: 'Пользователь по данному _id не найден' });
       }
       return res.status(SERVER_ERROR).send({ err });
     });
