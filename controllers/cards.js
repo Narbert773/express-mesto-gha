@@ -23,14 +23,12 @@ const createCard = (req, res, next) => {
 };
 
 const deleteCard = (req, res, next) => {
-  const { cardId } = req.params;
-  const { _id } = req.user;
-  Card.findByIdAndRemove(cardId)
+  const presentUserId = req.user._id;
+  Card.findById(req.params.cardId)
+    .orFail()
     .then((card) => {
-      if (!card) {
-        throw new NotFoundError('Карточка по данному _id не найдена');
-      }
-      if (card.owner.toString() !== _id) {
+      const ownerId = card.owner.toString();
+      if (ownerId !== presentUserId) {
         throw new ForbiddenError('Вы не можете удалить данную карточку');
       }
       return card;
@@ -40,6 +38,9 @@ const deleteCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         return next(new RequestError('Неверные данные для создания карточки'));
+      }
+      if (err.name === 'DocumentNotFoundError') {
+        return next(new NotFoundError('Карточка по данному _id не найдена'));
       }
       return next(err);
     });
